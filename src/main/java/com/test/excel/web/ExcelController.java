@@ -3,6 +3,7 @@ package com.test.excel.web;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.excel.service.ExcelService;
 import com.test.excel.vo.Fruit;
 @Controller
@@ -37,17 +41,19 @@ public class ExcelController {
         return "excelDownloadView";
     }
 	
+
 	@RequestMapping(value = "/uploadExcelFile", method = RequestMethod.POST)
-    public String uploadExcelFile(MultipartHttpServletRequest request, Model model) {
+	@ResponseBody
+    public List<Map<String, Object>> uploadExcelFile(MultipartHttpServletRequest request, Model model) throws JsonProcessingException {
         MultipartFile file = null;
         Iterator<String> iterator = request.getFileNames();
         if(iterator.hasNext()) {
             file = request.getFile(iterator.next());
         }
-        List<Fruit> list = service.uploadExcelFile(file);
+        List<Map<String, Object>> list = service.uploadExcelFile(file);
         
-        model.addAttribute("list", list);
-        return "jsonView";
+        //model.addAttribute("list", new ObjectMapper().writeValueAsString(list));
+        return list;
     }
 
 }

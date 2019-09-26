@@ -1,7 +1,9 @@
 package com.test.excel.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
@@ -107,8 +109,10 @@ public class ExcelService {
      * @param excelFile
      * @return 생성한 과일 리스트
      */
-    public List<Fruit> uploadExcelFile(MultipartFile excelFile){
-        List<Fruit> list = new ArrayList<Fruit>();
+    public List<Map<String, Object>> uploadExcelFile(MultipartFile excelFile){
+        
+        Map<String, Object> map = null;
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         try {
             OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
             XSSFWorkbook workbook = new XSSFWorkbook(opcPackage);
@@ -117,9 +121,8 @@ public class ExcelService {
             XSSFSheet sheet = workbook.getSheetAt(0);
             
             for(int i=1; i<sheet.getLastRowNum() + 1; i++) {
-                Fruit fruit = new Fruit();
+            	map = new HashMap<String, Object>();
                 XSSFRow row = sheet.getRow(i);
-                
                 // 행이 존재하기 않으면 패스
                 if(null == row) {
                     continue;
@@ -127,20 +130,38 @@ public class ExcelService {
                 
                 // 행의 두번째 열(이름부터 받아오기) 
                 XSSFCell cell = row.getCell(1);
-                if(null != cell) fruit.setName(cell.getStringCellValue());
+                if(null != cell) {
+                	map.put("name", cell.getStringCellValue());
+                }
                 // 행의 세번째 열 받아오기
                 cell = row.getCell(2);
-                if(null != cell) fruit.setPrice((long)cell.getNumericCellValue());
+                if(null != cell) {
+                	map.put("price", getStringValue(cell));
+                }
                 // 행의 네번째 열 받아오기
                 cell = row.getCell(3);
-                if(null != cell) fruit.setQuantity((int)cell.getNumericCellValue());
+                if(null != cell) {
+                	map.put("quantity", getStringValue(cell));
+                }
                 
-                list.add(fruit);
+                result.add(map);
             }
+            System.out.println(result);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return list;
+        return result;
+    }
+    
+    public static String getStringValue(Cell cell) {
+        String rtnValue = "";
+        try {
+            rtnValue = cell.getStringCellValue();
+        } catch(IllegalStateException e) {
+            rtnValue = Integer.toString((int)cell.getNumericCellValue());            
+        }
+        
+        return rtnValue;
     }
 
 }
