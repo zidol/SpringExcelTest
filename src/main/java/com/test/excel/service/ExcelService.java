@@ -109,40 +109,59 @@ public class ExcelService {
      * @param excelFile
      * @return 생성한 과일 리스트
      */
-    public List<Map<String, Object>> uploadExcelFile(MultipartFile excelFile){
+    public List<Map<String, String>> uploadExcelFile(MultipartFile excelFile){
         
-        Map<String, Object> map = null;
-        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        Map<String, String> map = null;
+        List<Map<String, String>> result = new ArrayList<Map<String, String>>();
+        List<String> headerName = new ArrayList<String>(); 
         try {
             OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
             XSSFWorkbook workbook = new XSSFWorkbook(opcPackage);
             
             // 첫번째 시트 불러오기
             XSSFSheet sheet = workbook.getSheetAt(0);
+//            System.out.println(sheet.getLastRowNum());
+//            System.out.println(sheet.getRow(sheet.getLastRowNum()).getPhysicalNumberOfCells());
+            
+            int rowNum = sheet.getLastRowNum();
+            int colNum = sheet.getRow(sheet.getLastRowNum()).getPhysicalNumberOfCells();
+            
+            XSSFRow row = sheet.getRow(0);
+
+            for(int i = 0; i < colNum; i++) {
+            	headerName.add(row.getCell(i).getStringCellValue());
+            }
+            System.out.println(headerName);
             
             for(int i=1; i<sheet.getLastRowNum() + 1; i++) {
-            	map = new HashMap<String, Object>();
-                XSSFRow row = sheet.getRow(i);
+            	map = new HashMap<String, String>();
+                row = sheet.getRow(i);
                 // 행이 존재하기 않으면 패스
                 if(null == row) {
                     continue;
                 }
-                
-                // 행의 두번째 열(이름부터 받아오기) 
-                XSSFCell cell = row.getCell(1);
-                if(null != cell) {
-                	map.put("name", cell.getStringCellValue());
+                XSSFCell cell = null;
+                for(int j = 1; j < colNum; j++) {
+                	cell = row.getCell(j);
+                	if(null != cell) {
+                		map.put(headerName.get(j), getStringValue(cell));
+                	}
                 }
-                // 행의 세번째 열 받아오기
-                cell = row.getCell(2);
-                if(null != cell) {
-                	map.put("price", getStringValue(cell));
-                }
-                // 행의 네번째 열 받아오기
-                cell = row.getCell(3);
-                if(null != cell) {
-                	map.put("quantity", getStringValue(cell));
-                }
+//                // 행의 두번째 열(이름부터 받아오기) 
+//                XSSFCell cell = row.getCell(1);
+//                if(null != cell) {
+//                	map.put("name", getStringValue(cell));
+//                }
+//                // 행의 세번째 열 받아오기
+//                cell = row.getCell(2);
+//                if(null != cell) {
+//                	map.put("price", getStringValue(cell));
+//                }
+//                // 행의 네번째 열 받아오기
+//                cell = row.getCell(3);
+//                if(null != cell) {
+//                	map.put("quantity", getStringValue(cell));
+//                }
                 
                 result.add(map);
             }

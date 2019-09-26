@@ -44,13 +44,13 @@ public class ExcelController {
 
 	@RequestMapping(value = "/uploadExcelFile", method = RequestMethod.POST)
 	@ResponseBody
-    public List<Map<String, Object>> uploadExcelFile(MultipartHttpServletRequest request, Model model) throws JsonProcessingException {
+    public List<Map<String, String>> uploadExcelFile(MultipartHttpServletRequest request, Model model) throws JsonProcessingException {
         MultipartFile file = null;
         Iterator<String> iterator = request.getFileNames();
         if(iterator.hasNext()) {
             file = request.getFile(iterator.next());
         }
-        List<Map<String, Object>> list = service.uploadExcelFile(file);
+        List<Map<String, String>> list = service.uploadExcelFile(file);
         
         //model.addAttribute("list", new ObjectMapper().writeValueAsString(list));
         return list;

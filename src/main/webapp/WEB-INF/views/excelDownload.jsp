@@ -26,9 +26,9 @@
 			<tr>
 			<tr v-for="(c, index) in articleList">
 				<td align="center">{{index+1}}</td>
-				<td align="center">{{c.name}}</td>
-				<td align="left">{{c.price}}</td>
-				<td align="left">{{c.quantity}}</td>
+				<td align="center">{{c.과일이름}}</td>
+				<td align="left">{{c.수량}}</td>
+				<td align="left">{{c.가격}}</td>
 			</tr>
 		</table>
 </div>
@@ -54,7 +54,7 @@
 		            success: function(list){
 		            	console.log("DATA!!", list)
 		            	vm.articleList = dataConvertToJson(list);
-		            	console.log(vm.articleList);
+
 		            }
 		        })
 		    },
@@ -71,10 +71,11 @@
 	
 	//Number , String , Boolean , Function , Object , Null , undefined , Array 
 	function dataConvertToJson (data) {
+		console.log(typeof data);
 		var type = typeof data;
 		if (type == "string") {
 			return JSON.parse(data);
-		} else if (type == "Object" || type == "Array" ) {
+		} else if (type == "object" || type == "Array" ) {
 			return data;
 		} else {
 			console.log("데이터 변환 오류");
