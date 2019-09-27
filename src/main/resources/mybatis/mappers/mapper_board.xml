@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.article">
+
+	
+	<!-- 게시글 작성 -->
+	<!-- <insert id="create" parameterType="hashmap">
+		<![CDATA[
+		INSERT INTO BOARD(ID
+		   				, WRITER
+		   				, TITLE
+		   				, CONTENT)
+				   VALUES((SELECT NVL(MAX(ID), 0) + 1 FROM BOARD)
+		     			 , #{writer}
+		    	 		 , #{title}
+		     			 , #{content})
+		]]>
+	</insert>
+ -->
+	<insert id="create" parameterType="java.util.HashMap">
+		insert into excel_tbl(name,price,quantity)
+	       values
+	        <foreach collection="list" item="item" separator=","> 
+	            ('${item.name}', ${item.price}, ${item.quantity})
+	        </foreach>
+	 </insert>
+</mapper>

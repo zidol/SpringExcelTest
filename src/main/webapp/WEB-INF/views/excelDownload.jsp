@@ -8,33 +8,31 @@
 </head>
 <body>
 <div id="article">
-<form id="form1" name="form1" method="post" enctype="multipart/form-data">
-    <input type="file" id="fileInput" name="fileInput">
-    <button type="button" v-on:click="doExcelUploadProcess">엑셀업로드 작업</button>
-    <button type="button" v-on:click="doExcelDownloadProcess">엑셀다운로드 작업</button>
-</form>
-<div id="result">	
-</div>
-
-<div>
-	<table border="1" cellpadding="0" cellspacing="0" width="700">
-			<tr>
-				<th bgcolor="orange" width="100">글 번호</th>
-				<th bgcolor="orange" width="200">이름</th>
-				<th bgcolor="orange" width="150">가격</th>
-				<th bgcolor="orange" width="150">개수</th>
-			<tr>
-			<tr v-for="(c, index) in articleList">
-				<td align="center">{{index+1}}</td>
-				<td align="center">{{c.과일이름}}</td>
-				<td align="left">{{c.수량}}</td>
-				<td align="left">{{c.가격}}</td>
-			</tr>
-		</table>
-</div>
+	<form id="form1" name="form1" method="post" enctype="multipart/form-data">
+	    <input type="file" id="fileInput" name="fileInput">
+	    <button type="button" v-on:click="doExcelUploadProcess">엑셀업로드 작업</button>
+	    <button type="button" v-on:click="doExcelDownloadProcess">엑셀다운로드 작업</button>
+	 
+	</form>
+		<form id="form2" name="form2" action="">
+			<table border="1" cellpadding="0" cellspacing="0" width="700">
+				<tr>
+					<th bgcolor="orange" width="100">글 번호</th>
+					<th bgcolor="orange" width="200">이름</th>
+					<th bgcolor="orange" width="150">가격</th>
+					<th bgcolor="orange" width="150">개수</th>
+				<tr>
+				<tr v-for="(c, index) in articleList">
+					<td align="center">{{index+1}}</td>
+					<td align="center"><input id="name_id" type="text" v-model="c.name"></td>
+					<td align="left"><input id="price_id" type="text" v-model="c.price"></td>
+					<td align="left"><input id="quantity_id" type="text" v-model="c.quantity"></td>
+				</tr>
+			</table>
+			<button type="button" v-on:click="insertDB">저장</button>
+		</form>
 </div>
 <script type="text/javascript">
-
 	var vm = new Vue({
 		el : "#article",
 		data : {
@@ -44,7 +42,7 @@
 			doExcelUploadProcess : function(){
 		        var vm = this;
 		        var f = new FormData(document.getElementById('form1'));
-		        console.log(f);
+
 		        $.ajax({
 		            url: "uploadExcelFile",
 		            data: f,
@@ -52,7 +50,7 @@
 		            contentType: false,
 		            type: "POST",
 		            success: function(list){
-		            	console.log("DATA!!", list)
+		            	
 		            	vm.articleList = dataConvertToJson(list);
 
 		            }
@@ -63,6 +61,22 @@
 		    	var f = document.form1;
 		        f.action = "downloadExcelFile";
 		        f.submit();
+		    },
+		    
+		    insertDB : function() {
+		    		
+		    		var listData = vm.articleList;
+		    		
+		    		$.ajax({
+			            url: "insertData",
+			            data: JSON.stringify(listData),
+			            type: "json",
+			            contentType: "application/json",
+			            type: "POST",
+			            success: function(){
+							location.href="/articleList";
+			            }
+			        })
 		    }
 		}
 	

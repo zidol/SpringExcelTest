@@ -129,12 +129,12 @@ public class ExcelService {
             XSSFRow row = sheet.getRow(0);
 
             for(int i = 0; i < colNum; i++) {
-            	headerName.add(row.getCell(i).getStringCellValue());
+            	headerName.add(convertName(row.getCell(i).getStringCellValue()));
             }
             System.out.println(headerName);
             
             for(int i=1; i<sheet.getLastRowNum() + 1; i++) {
-            	map = new HashMap<String, String>();
+            		map = new HashMap<String, String>();
                 row = sheet.getRow(i);
                 // 행이 존재하기 않으면 패스
                 if(null == row) {
@@ -142,10 +142,10 @@ public class ExcelService {
                 }
                 XSSFCell cell = null;
                 for(int j = 1; j < colNum; j++) {
-                	cell = row.getCell(j);
-                	if(null != cell) {
-                		map.put(headerName.get(j), getStringValue(cell));
-                	}
+	                	cell = row.getCell(j);
+	                	if(null != cell) {
+	                		map.put(headerName.get(j), getStringValue(cell));
+	                	}
                 }
 //                // 행의 두번째 열(이름부터 받아오기) 
 //                XSSFCell cell = row.getCell(1);
@@ -181,6 +181,18 @@ public class ExcelService {
         }
         
         return rtnValue;
+    }
+    
+    public static String convertName(String cellName) {
+    		if(cellName.equals("과일이름")) {
+    			return "name";
+    		} else if(cellName.equals("가격")) {
+    			return "price";
+    		} else if(cellName.equals("수량")) {
+    			return "quantity";
+    		}  else {
+    			return null;
+    		}
     }
 
 }

@@ -26,7 +26,7 @@
 		<br>   	
 	   	
 		<br>
-		<a href="/article/insertArticle">게시들 등록</a>
+		<a href="/">게시들 등록</a>
 		<br>
 	</div>
 	
