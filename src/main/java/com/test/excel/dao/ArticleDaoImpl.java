@@ -15,17 +15,16 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	private static final String MP = "mapper.article";
 	
-	private static final String SELECT_ALL = MP + ".listAll";
-	private static final String SELECT_CRITERIA = MP + ".listCriteria";
-	private static final String SELECT_DETAIL = MP + ".article";
-	private static final String SELECT_COUNTARTICLES = MP + ".countArticles";
 	private static final String CREATE = MP + ".create";
-	private static final String UPDATE = MP + ".update";
-	private static final String DELETE = MP + ".delete";
+	private static final String CREATE_TABLE = MP + ".create_table";
+	
 	@Override
 	public void insert(List<Map<String, Object>> map) throws DataAccessException {
 		sqlsession.insert(CREATE, map);		
 	}
 
-
+	@Override
+	public void create(Map<String, String>map) throws DataAccessException {
+		sqlsession.update(CREATE_TABLE, map);	
+	}
 }

@@ -1,7 +1,11 @@
 package com.test.excel.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,38 @@ public class ArticleServiceImpl implements ArticleService{
 		// TODO Auto-generated method stub
 		articleDao.insert(map);
 		
+	}
+
+	@Override
+	public void createArticle(List<Map<String, Object>> map, String now) throws Exception {
+		// TODO Auto-generated method stub
+		List<String> tableColumn = new ArrayList<String>();
+		
+		//엑셀 헤더이름 추출
+		Map<String, Object> keyMap = new HashMap<String, Object>();
+		keyMap = map.get(0);
+		Set set = keyMap.keySet();
+		Iterator iterator = set.iterator();
+		
+		//헤더이름 테이블 컬럼 이름으로 저장 하기위한 작업
+		while(iterator.hasNext()) {
+			String key = (String)iterator.next();
+			tableColumn.add(key);
+		}
+		
+		String tableName = now + "_Excel";
+		
+		String create_table = "create table " + tableName + "(";
+		for(int i = 0; i < tableColumn.size(); i++) {
+			create_table += tableColumn.get(i) + " varchar(200) not null, ";
+		}
+		create_table = create_table.substring(0, create_table.length()-2);
+		create_table += ")";
+		
+		Map<String, String> tableMap = new HashMap<String, String>();
+		tableMap.put("create_table", create_table);
+		
+		articleDao.create(tableMap);
 	}
 
 }

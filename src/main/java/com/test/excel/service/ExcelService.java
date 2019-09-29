@@ -38,7 +38,7 @@ public class ExcelService {
     }
     
     /**
-     * 과일 리스트를 간단한 엑셀 워크북 객체로 생성
+     * 리스트를 간단한 엑셀 워크북 객체로 생성
      * @param list
      * @return 생성된 워크북
      */
@@ -105,9 +105,9 @@ public class ExcelService {
     
     
     /**
-     *업로드한 엑셀파일을 과일 리스트로 만들기
+     *업로드한 엑셀파일을 리스트로 만들기
      * @param excelFile
-     * @return 생성한 과일 리스트
+     * @return 리스트
      */
     public List<Map<String, String>> uploadExcelFile(MultipartFile excelFile){
         
@@ -134,14 +134,14 @@ public class ExcelService {
             System.out.println(headerName);
             
             for(int i=1; i<sheet.getLastRowNum() + 1; i++) {
-            		map = new HashMap<String, String>();
+            	map = new HashMap<String, String>();
                 row = sheet.getRow(i);
                 // 행이 존재하기 않으면 패스
                 if(null == row) {
                     continue;
                 }
                 XSSFCell cell = null;
-                for(int j = 1; j < colNum; j++) {
+                for(int j = 0; j < colNum; j++) {
 	                	cell = row.getCell(j);
 	                	if(null != cell) {
 	                		map.put(headerName.get(j), getStringValue(cell));
@@ -190,7 +190,9 @@ public class ExcelService {
     			return "price";
     		} else if(cellName.equals("수량")) {
     			return "quantity";
-    		}  else {
+    		} else if(cellName.equals("번호")) {
+    			return "id";
+    		} else {
     			return null;
     		}
     }

@@ -19,10 +19,19 @@
 	</insert>
  -->
 	<insert id="create" parameterType="java.util.HashMap">
-		insert into excel_tbl(name,price,quantity)
-	       values
+	<![CDATA[
+		insert into 
+	]]>${now}
+	(name,price,quantity) values
 	        <foreach collection="list" item="item" separator=","> 
 	            ('${item.name}', ${item.price}, ${item.quantity})
 	        </foreach>
 	 </insert>
+	 <sql id="tableName">
+	 	${now}
+	 </sql>
+	 
+	 <select id="create_table" parameterType="java.util.HashMap">
+	 	${create_table}
+	 </select>
 </mapper>

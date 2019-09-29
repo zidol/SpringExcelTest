@@ -1,11 +1,14 @@
 package com.test.excel.web;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,12 +21,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.test.excel.HomeController;
 import com.test.excel.dao.ArticleDao;
 import com.test.excel.service.ArticleService;
 import com.test.excel.service.ExcelService;
 import com.test.excel.vo.Fruit;
 @Controller
 public class ExcelController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ExcelController.class);
 	
 	@Autowired
 	ExcelService service;
@@ -66,8 +72,16 @@ public class ExcelController {
 	@ResponseBody
 	@RequestMapping(value = "/insertData", method = RequestMethod.POST)
     public void insertData(@RequestBody List<Map<String,Object>> map) throws Exception {
+		String now = System.currentTimeMillis() +"";
+		logger.info("테이블 생성");
+		articleService.createArticle(map, now);
+		logger.info("테이블 생성 완료");
+		now += "_Excel";
+		Map<String, Object> addMap = new HashMap<String, Object>();
+		addMap.put("now", now);
+		map.add(addMap);
+		System.out.println(map);
 		articleService.insertArticle(map);
-		System.out.println(map.toString());
     }
 	
 	@RequestMapping(value = "/articleList", method = RequestMethod.GET)
