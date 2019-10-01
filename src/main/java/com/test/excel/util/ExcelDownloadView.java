@@ -2,15 +2,15 @@ package com.test.excel.util;
 
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.servlet.view.AbstractView;
 
 public class ExcelDownloadView extends AbstractView{
@@ -18,8 +18,7 @@ public class ExcelDownloadView extends AbstractView{
 	@Override
     protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        System.out.println("ExcelDownloadView1");
-        Locale locale = (Locale) model.get("locale");
+		Locale locale = (Locale) model.get("locale");
         String workbookName = (String) model.get("workbookName");
         
         // 겹치는 파일 이름 중복을 피하기 위해 시간을 이용해서 파일 이름에 추
@@ -62,15 +61,14 @@ public class ExcelDownloadView extends AbstractView{
         response.setHeader("Content-Transfer-Encoding", "binary");
         
        OutputStream os = null;
-       SXSSFWorkbook workbook = null;
-       System.out.println("ExcelDownloadView2");
+       XSSFWorkbook workbook = null;
+       
        try {
-           workbook = (SXSSFWorkbook) model.get("workbook");
+           workbook = (XSSFWorkbook) model.get("workbook");
            os = response.getOutputStream();
-           
+           System.out.println("worbook!! : " + workbook);
            // 파일생성
            workbook.write(os);
-           System.out.println("ExcelDownloadView3");
        }catch (Exception e) {
            e.printStackTrace();
        } finally {

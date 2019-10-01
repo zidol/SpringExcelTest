@@ -59,8 +59,7 @@
 		    
 		    doExcelDownloadProcess : function() {
 		    	var f = document.form1;
-		        f.action = "downloadExcelFile";
-		        f.submit();
+		        console.log(f);
 		    },
 		    
 		    insertDB : function() {

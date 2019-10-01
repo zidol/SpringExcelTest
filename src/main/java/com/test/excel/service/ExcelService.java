@@ -8,9 +8,6 @@ import java.util.Map;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.streaming.SXSSFCell;
-import org.apache.poi.xssf.streaming.SXSSFRow;
-import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -44,11 +41,11 @@ public class ExcelService {
      * @param list
      * @return 생성된 워크북
      */
-    public SXSSFWorkbook makeSimpleFruitExcelWorkbook(List<Map<String, String>> list) {
-        SXSSFWorkbook workbook = new SXSSFWorkbook();
+    public XSSFWorkbook makeSimpleFruitExcelWorkbook(List<Map<String, String>> list) {
+    	XSSFWorkbook workbook = new XSSFWorkbook();
         
         // 시트 생성
-        SXSSFSheet sheet = workbook.createSheet("과일표");
+        XSSFSheet sheet = workbook.createSheet("과일표");
         
         //시트 열 너비 설정
         sheet.setColumnWidth(0, 1500);
@@ -72,8 +69,8 @@ public class ExcelService {
         headerCell.setCellValue("수량");
         
         // 과일표 내용 행 및 셀 생성
-        SXSSFRow  bodyRow = null;
-        SXSSFCell bodyCell = null;
+        XSSFRow  bodyRow = null;
+        XSSFCell bodyCell = null;
         for(int i=0; i<list.size(); i++) {
         		System.out.println(list.get(i).get("id"));
             
@@ -92,7 +89,7 @@ public class ExcelService {
             bodyCell = bodyRow.createCell(3);
             bodyCell.setCellValue(list.get(i).get("quantity"));
         }
-        
+        System.out.println(workbook);
         return workbook;
     }
     
@@ -101,7 +98,7 @@ public class ExcelService {
      * @param list
      * @return
      */
-    public SXSSFWorkbook excelFileDownloadProcess(List<Map<String, String>> list) {
+    public XSSFWorkbook excelFileDownloadProcess(List<Map<String, String>> list) {
         return this.makeSimpleFruitExcelWorkbook(list);
     }
     
