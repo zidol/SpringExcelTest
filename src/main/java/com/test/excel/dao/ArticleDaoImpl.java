@@ -15,16 +15,29 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	private static final String MP = "mapper.article";
 	
-	private static final String CREATE = MP + ".create";
+	private static final String INSERT = MP + ".insert";
 	private static final String CREATE_TABLE = MP + ".create_table";
+	private static final String SELECT_ALL = MP + ".listAll";
+	private static final String SELECT_DETAIL = MP + ".article";
 	
 	@Override
 	public void insert(List<Map<String, Object>> map) throws DataAccessException {
-		sqlsession.insert(CREATE, map);		
+		sqlsession.insert(INSERT, map);		
 	}
 
 	@Override
 	public void create(Map<String, String>map) throws DataAccessException {
+		System.out.println(map.toString());
 		sqlsession.update(CREATE_TABLE, map);	
+	}
+
+	@Override
+	public List<String> articleList() throws DataAccessException {
+		return sqlsession.selectList(SELECT_ALL);
+	}
+
+	@Override
+	public List<Map<String, String>> article(Map<String, String> id) throws DataAccessException {
+		return sqlsession.selectList(SELECT_DETAIL, id);
 	}
 }

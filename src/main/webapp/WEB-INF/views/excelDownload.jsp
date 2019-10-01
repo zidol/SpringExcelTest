@@ -70,7 +70,6 @@
 		    		$.ajax({
 			            url: "insertData",
 			            data: JSON.stringify(listData),
-			            type: "json",
 			            contentType: "application/json",
 			            type: "POST",
 			            success: function(){
@@ -99,5 +98,6 @@
 	}
 	
 </script>
+
 </body>
 </html>

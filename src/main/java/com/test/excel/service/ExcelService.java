@@ -8,6 +8,8 @@ import java.util.Map;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.streaming.SXSSFCell;
+import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -42,7 +44,7 @@ public class ExcelService {
      * @param list
      * @return 생성된 워크북
      */
-    public SXSSFWorkbook makeSimpleFruitExcelWorkbook(List<Fruit> list) {
+    public SXSSFWorkbook makeSimpleFruitExcelWorkbook(List<Map<String, String>> list) {
         SXSSFWorkbook workbook = new SXSSFWorkbook();
         
         // 시트 생성
@@ -70,25 +72,25 @@ public class ExcelService {
         headerCell.setCellValue("수량");
         
         // 과일표 내용 행 및 셀 생성
-        Row bodyRow = null;
-        Cell bodyCell = null;
+        SXSSFRow  bodyRow = null;
+        SXSSFCell bodyCell = null;
         for(int i=0; i<list.size(); i++) {
-            Fruit fruit = list.get(i);
+        		System.out.println(list.get(i).get("id"));
             
             // 행 생성
             bodyRow = sheet.createRow(i+1);
             // 데이터 번호 표시
             bodyCell = bodyRow.createCell(0);
-            bodyCell.setCellValue(i + 1);
+            bodyCell.setCellValue(list.get(i).get("id"));
             // 데이터 이름 표시
             bodyCell = bodyRow.createCell(1);
-            bodyCell.setCellValue(fruit.getName());
+            bodyCell.setCellValue(list.get(i).get("name"));
             // 데이터 가격 표시
             bodyCell = bodyRow.createCell(2);
-            bodyCell.setCellValue(fruit.getPrice());
+            bodyCell.setCellValue(list.get(i).get("price"));
             // 데이터 수량 표시
             bodyCell = bodyRow.createCell(3);
-            bodyCell.setCellValue(fruit.getQuantity());
+            bodyCell.setCellValue(list.get(i).get("quantity"));
         }
         
         return workbook;
@@ -99,7 +101,7 @@ public class ExcelService {
      * @param list
      * @return
      */
-    public SXSSFWorkbook excelFileDownloadProcess(List<Fruit> list) {
+    public SXSSFWorkbook excelFileDownloadProcess(List<Map<String, String>> list) {
         return this.makeSimpleFruitExcelWorkbook(list);
     }
     

@@ -46,15 +46,25 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		String create_table = "create table " + tableName + "(";
 		for(int i = 0; i < tableColumn.size(); i++) {
-			create_table += tableColumn.get(i) + " varchar(200) not null, ";
+			create_table += tableColumn.get(i).equals("id") ? tableColumn.get(i) + " int auto_increment primary key, " : tableColumn.get(i) + " varchar(200) not null, ";
 		}
 		create_table = create_table.substring(0, create_table.length()-2);
-		create_table += ")";
+		create_table += ")DEFAULT CHARSET=utf8";
 		
 		Map<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put("create_table", create_table);
-		
+		System.out.println(create_table);
 		articleDao.create(tableMap);
+	}
+
+	@Override
+	public List<String> articleList() throws Exception {
+		return articleDao.articleList();
+	}
+
+	@Override
+	public List<Map<String, String>> article(Map<String, String> id) throws Exception {
+		return articleDao.article(id);
 	}
 
 }

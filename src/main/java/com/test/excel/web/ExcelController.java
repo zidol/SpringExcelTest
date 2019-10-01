@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.excel.HomeController;
 import com.test.excel.dao.ArticleDao;
 import com.test.excel.service.ArticleService;
@@ -38,13 +40,14 @@ public class ExcelController {
 	ArticleService articleService;
 	
 	@RequestMapping(value = "/downloadExcelFile", method = RequestMethod.POST)
-    public String downloadExcelFile(Model model) {
-        String[] names = {"자몽", "애플망고", "멜론", "오렌지"};
-        long[] prices = {5000, 10000, 7000, 6000};
-        int[] quantities = {50, 50, 40, 40};
-        List<Fruit> list = service.makeFruitList(names, prices, quantities);
-        
-        SXSSFWorkbook workbook = service.excelFileDownloadProcess(list);
+    public String downloadExcelFile(@RequestBody List<Map<String, String>> map, Model model) {
+		System.out.println(map);
+//        String[] names = {"자몽", "애플망고", "멜론", "오렌지"};
+//        long[] prices = {5000, 10000, 7000, 6000};
+//        int[] quantities = {50, 50, 40, 40};
+//        List<Fruit> list = service.makeFruitList(names, prices, quantities);
+
+        SXSSFWorkbook workbook = service.excelFileDownloadProcess(map);
         
         model.addAttribute("locale", Locale.KOREA);
         model.addAttribute("workbook", workbook);
@@ -85,8 +88,22 @@ public class ExcelController {
     }
 	
 	@RequestMapping(value = "/articleList", method = RequestMethod.GET)
-	public String viewData() throws Exception {
+	public String viewData(Model model) throws Exception {
+		List<String> map = articleService.articleList();
+		model.addAttribute("tableList", new ObjectMapper().writeValueAsString(map));
 		return "articleList";
 	}
+	
+	//게시글 상세 내용 호출
+		@RequestMapping(value="/{id}", method = RequestMethod.GET)
+		public String article(@PathVariable("id") String id, Model model) throws Exception {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("id", id);
+			List<Map<String, String>> list = articleService.article(map);
+			System.out.println(list);
+			model.addAttribute("article", new ObjectMapper().writeValueAsString(list));
+//			logger.info("Article Detail");
+			return "articleDetail";
+		}
 
 }

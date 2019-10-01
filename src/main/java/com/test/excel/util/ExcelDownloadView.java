@@ -18,7 +18,7 @@ public class ExcelDownloadView extends AbstractView{
 	@Override
     protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        
+        System.out.println("ExcelDownloadView1");
         Locale locale = (Locale) model.get("locale");
         String workbookName = (String) model.get("workbookName");
         
@@ -63,13 +63,14 @@ public class ExcelDownloadView extends AbstractView{
         
        OutputStream os = null;
        SXSSFWorkbook workbook = null;
-       
+       System.out.println("ExcelDownloadView2");
        try {
            workbook = (SXSSFWorkbook) model.get("workbook");
            os = response.getOutputStream();
            
            // 파일생성
            workbook.write(os);
+           System.out.println("ExcelDownloadView3");
        }catch (Exception e) {
            e.printStackTrace();
        } finally {
