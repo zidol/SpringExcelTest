@@ -59,6 +59,7 @@ public class ExcelDownloadView extends AbstractView{
         response.setContentType("application/download;charset=utf-8");
         response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\";");
         response.setHeader("Content-Transfer-Encoding", "binary");
+        response.setHeader("Set-Cookie", "fileDownload=true; path=/");
         
        OutputStream os = null;
        XSSFWorkbook workbook = null;

@@ -37,7 +37,7 @@
 	<select id="article" parameterType="String" resultType="java.util.HashMap" >
 	    <![CDATA[
 			SELECT * 
-			 FROM ${id}	 
+			 FROM ${tableName}	 
 		]]>
 	</select>
 </mapper>

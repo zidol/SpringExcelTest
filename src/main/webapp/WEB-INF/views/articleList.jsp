@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://unpkg.com/vue"></script>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </head>
 <body>
 <div align="center" id="table">

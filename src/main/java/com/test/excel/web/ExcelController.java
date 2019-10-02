@@ -1,10 +1,15 @@
 package com.test.excel.web;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
@@ -35,13 +40,16 @@ public class ExcelController {
 	@Autowired
 	ArticleService articleService;
 	
+	
 	@RequestMapping(value = "/downloadExcelFile", method = RequestMethod.POST)
-    public String downloadExcelFile(@RequestBody List<Map<String, String>> map, Model model) {
-		System.out.println(map);
+    public String downloadExcelFile(@RequestBody List<Map<String, String>> map, Model model, HttpServletResponse response) throws IOException { 
+		System.out.println("downloadExcelFile");
 //        String[] names = {"자몽", "애플망고", "멜론", "오렌지"};
 //        long[] prices = {5000, 10000, 7000, 6000};
 //        int[] quantities = {50, 50, 40, 40};
 //        List<Fruit> list = service.makeFruitList(names, prices, quantities);
+		
+		
 
 		XSSFWorkbook workbook = service.excelFileDownloadProcess(map);
         
@@ -49,6 +57,17 @@ public class ExcelController {
         model.addAttribute("workbook", workbook);
         model.addAttribute("workbookName", "과일표");
         
+//        response.setContentType("application/octet-stream; charset=utf-8");
+//        response.setHeader("Content-Transfer-Encoding", "binary");
+//        response.setHeader("Content-Disposition", "ATTachment; Filename="+URLEncoder.encode("테스트","UTF-8")+".xls");
+//        
+//
+//        OutputStream fileOut  = response.getOutputStream();
+//        workbook.write(fileOut);
+//        fileOut.close();
+//
+//        response.getOutputStream().flush();
+//        response.getOutputStream().close();
         return "excelDownloadView";
     }
 	
@@ -91,10 +110,10 @@ public class ExcelController {
 	}
 	
 	//게시글 상세 내용 호출
-		@RequestMapping(value="/{id}", method = RequestMethod.GET)
-		public String article(@PathVariable("id") String id, Model model) throws Exception {
+		@RequestMapping(value="/{tableName}", method = RequestMethod.GET)
+		public String article(@PathVariable("tableName") String tableName, Model model) throws Exception {
 			Map<String, String> map = new HashMap<String, String>();
-			map.put("id", id);
+			map.put("tableName", tableName);
 			List<Map<String, String>> list = articleService.article(map);
 			System.out.println(list);
 			model.addAttribute("article", new ObjectMapper().writeValueAsString(list));
