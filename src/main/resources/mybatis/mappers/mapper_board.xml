@@ -13,11 +13,10 @@
 	            		${item.now}
 	            </if>
 	        </foreach>
-
-	(name,price,quantity) values
+	        (name,price,quantity) values
 	        <foreach collection="list" item="item" separator=","> 
 	            <if test="item.name != null and item.price != null and item.quantity != null">
-	            		('${item.name}', ${item.price}, ${item.quantity})
+	            ('${item.name}', ${item.price}, ${item.quantity})
 	            </if>
 	        </foreach>
 	 </insert>

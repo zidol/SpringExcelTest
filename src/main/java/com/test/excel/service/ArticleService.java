@@ -15,6 +15,6 @@ public interface ArticleService {
 	List<String> articleList() throws Exception;
 	
 	//테이블 상세내용
-	List<Map<String, String>> article(Map<String, String> id) throws Exception;
+	List<Map<String, Object>> article(Map<String, String> id) throws Exception;
 	
 }

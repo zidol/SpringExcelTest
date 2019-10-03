@@ -13,5 +13,5 @@ public interface ArticleDao {
 	
 	public List<String> articleList() throws DataAccessException;
 
-	public List<Map<String, String>> article(Map<String, String> id) throws DataAccessException;
+	public List<Map<String, Object>> article(Map<String, String> id) throws DataAccessException;
 }

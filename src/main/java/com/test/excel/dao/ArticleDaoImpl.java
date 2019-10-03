@@ -37,7 +37,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	@Override
-	public List<Map<String, String>> article(Map<String, String> id) throws DataAccessException {
+	public List<Map<String, Object>> article(Map<String, String> id) throws DataAccessException {
 		return sqlsession.selectList(SELECT_DETAIL, id);
 	}
 }

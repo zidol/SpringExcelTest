@@ -12,7 +12,7 @@
 	<form id="form1" name="form1" method="post" enctype="multipart/form-data">
 	    <input type="file" id="fileInput" name="fileInput">
 	    <button type="button" v-on:click="doExcelUploadProcess">엑셀업로드 작업</button>
-	    <button type="button" v-on:click="doExcelDownloadProcess">엑셀다운로드 작업</button>
+	    <!-- <button type="button" v-on:click="doExcelDownloadProcess">엑셀다운로드 작업</button> -->
 	 
 	</form>
 		<form id="form2" name="form2" action="">

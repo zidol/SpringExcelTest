@@ -63,7 +63,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 
 	@Override
-	public List<Map<String, String>> article(Map<String, String> id) throws Exception {
+	public List<Map<String, Object>> article(Map<String, String> id) throws Exception {
 		return articleDao.article(id);
 	}
 

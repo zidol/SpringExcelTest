@@ -3,7 +3,7 @@
 <configuration>
 	<!-- Aliase 설정 -->
 	<typeAliases>
-		<typeAlias alias="articleVO" type="com.spring.zidol.vo.ArticleVO"/>
+		<!-- <typeAlias alias="articleVO" type="com.spring.zidol.vo.ArticleVO"/> -->
 	</typeAliases>
 	
 

@@ -24,7 +24,7 @@
 		</table>
 		<br>   	
 		<br>
-		<a href="/">게시들 등록</a>
+		<a href="/">엑셀 등록</a>
 		<br>
 	</div>
 	
