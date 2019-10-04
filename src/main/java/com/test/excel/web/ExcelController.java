@@ -37,7 +37,7 @@ public class ExcelController {
 	@Autowired
 	ArticleService articleService;
 	
-	@RequestMapping(value = "/downloadExcelFile", method = RequestMethod.POST)
+	@RequestMapping(value = "/excel/downloadExcelFile", method = RequestMethod.POST)
     public String downloadExcelFile(HttpServletRequest request , Model model) throws Exception { 
 		
 		String tableName = request.getParameter("tableName");
@@ -97,7 +97,7 @@ public class ExcelController {
 	}
 	
 	//게시글 상세 내용 호출
-	@RequestMapping(value="/{tableName}", method = RequestMethod.GET)
+	@RequestMapping(value="/excel/{tableName}", method = RequestMethod.GET)
 	public String article(@PathVariable("tableName") String tableName, Model model) throws Exception {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("tableName", tableName);

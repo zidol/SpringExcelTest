@@ -18,7 +18,7 @@
 			<tr>
 			<tr v-for="(c, index) in articleList">
 				<td align="center">{{index+1}}</td>
-				<td align="center"><a v-bind:href="'/' + c">{{c}}</a></td>
+				<td align="center"><a v-bind:href="'/excel/' + c">{{c}}</a></td>
 			</tr>
 		</table>
 		</table>

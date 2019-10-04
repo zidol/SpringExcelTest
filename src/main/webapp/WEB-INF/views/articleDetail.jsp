@@ -35,7 +35,11 @@
 		 </form>
 		<br>
 		<a href="/articleList">테이블 목록으로..</a> <a href="/">엑셀 업로드..</a>
-	   
+	   <form id="form1" name="form1" method="post" action="facebookPageCrawling.do">
+			<input type="hidden" name="tableName" v-model="tableName">
+
+			<input type="submit" value="페이스북">
+		 </form>
 </div>
 <script type="text/javascript">
 
@@ -61,17 +65,6 @@
 					  console.log(xhr);
 					} 
 				}) */
-			   $.fileDownload($("#form1").prop('downloadExcelFile'),{
-				   httpMethod: "POST",
-				   data:$("#form1").serialize(),
-				   successCallback: function (url) {
-				     $("#commonLoader").hide();
-				   },
-				   failCallback: function(responesHtml, url) {
-				     $("#commonLoader").hide();
-				     alert('관리자에게 문의 주세요.');
-				   }
-				 });
 		    }
 		}
 	});
