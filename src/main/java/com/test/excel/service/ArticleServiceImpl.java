@@ -26,7 +26,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 
 	@Override
-	public void createArticle(List<Map<String, Object>> map, String now) throws Exception {
+	public void createArticle(List<Map<String, Object>> map, String tableName) throws Exception {
 		// TODO Auto-generated method stub
 		List<String> tableColumn = new ArrayList<String>();
 		
@@ -42,11 +42,9 @@ public class ArticleServiceImpl implements ArticleService{
 			tableColumn.add(key);
 		}
 		
-		String tableName = now + "_Excel";
-		
 		String create_table = "create table " + tableName + "(";
 		for(int i = 0; i < tableColumn.size(); i++) {
-			create_table += tableColumn.get(i).equals("id") ? tableColumn.get(i) + " int auto_increment primary key, " : tableColumn.get(i) + " varchar(200) not null, ";
+			create_table += tableColumn.get(i).equals("id") ? tableColumn.get(i).replace(" ", "") + " int auto_increment primary key, " : tableColumn.get(i).replace(" ", "") + " varchar(500) not null, ";
 		}
 		create_table = create_table.substring(0, create_table.length()-2);
 		create_table += ")DEFAULT CHARSET=utf8";

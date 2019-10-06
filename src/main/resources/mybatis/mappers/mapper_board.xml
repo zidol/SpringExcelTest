@@ -5,20 +5,32 @@
 
 	
 	<insert id="insert" parameterType="java.util.HashMap">
-	<![CDATA[
-		insert into 
-	]]>
+		<![CDATA[
+			insert into 
+		]]>
 		<foreach collection="list" item="item" > 
-	            <if test="item.now != null">
-	            		${item.now}
+	            <if test="item.tableName != null">
+	            		${item.tableName}
 	            </if>
 	        </foreach>
-	        (name,price,quantity) values
-	        <foreach collection="list" item="item" separator=","> 
-	            <if test="item.name != null and item.price != null and item.quantity != null">
-	            ('${item.name}', ${item.price}, ${item.quantity})
-	            </if>
-	        </foreach>
+	        values
+        <!-- <foreach collection="list" item="item" separator=","> 
+            <if test="item.번호 != null and item.과일이름 != null and item.가격 != null and item.수량 != null">
+            <if test="item.tableNam eq null">
+            (#{item.번호}, #{item.과일이름}, #{item.가격}, #{item.수량})
+            </if>
+            </if>
+        </foreach> -->
+        
+        <foreach item="item" index="key" collection="list" separator=",">
+        <if test="item.tableName eq null">
+        (
+        <foreach item="value" index="key" collection="item.entrySet()" separator=",">
+            "${value}"
+        </foreach>
+        )
+        </if>
+    </foreach>
 	 </insert>
 	 
 	 <select id="create_table" parameterType="java.util.HashMap">

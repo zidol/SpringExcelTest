@@ -18,16 +18,15 @@
 		<form id="form2" name="form2" action="">
 			<table border="1" cellpadding="0" cellspacing="0" width="700">
 				<tr>
-					<th bgcolor="orange" width="100">글 번호</th>
-					<th bgcolor="orange" width="200">이름</th>
+					<th bgcolor="orange" width="150" v-for="(c, index) in headers">{{c}}</th>
+					<!-- <th bgcolor="orange" width="200">이름</th>
 					<th bgcolor="orange" width="150">가격</th>
-					<th bgcolor="orange" width="150">개수</th>
+					<th bgcolor="orange" width="150">개수</th> -->
 				<tr>
 				<tr v-for="(c, index) in articleList">
-					<td align="center">{{index+1}}</td>
-					<td align="center"><input id="name_id" type="text" v-model="c.name"></td>
-					<td align="left"><input id="price_id" type="text" v-model="c.price"></td>
-					<td align="left"><input id="quantity_id" type="text" v-model="c.quantity"></td>
+					<td align="center" v-for="(k, index) in headers"><input id="name_id" type="text" v-model="c[k]"></td>
+					<!-- <td align="left"><input id="price_id" type="text" v-model="c.부서"></td>
+					<td align="left"><input id="quantity_id" type="text" v-model="c[headers[2]]"></td> -->
 				</tr>
 			</table>
 			<button type="button" v-on:click="insertDB">저장</button>
@@ -38,6 +37,7 @@
 		el : "#article",
 		data : {
 			articleList : [],
+			headers : [],
 		},
 		methods : {
 			doExcelUploadProcess : function(){
@@ -51,9 +51,15 @@
 		            contentType: false,
 		            type: "POST",
 		            success: function(list){
-		            	
+		            	console.log(list[0]);
+		            	var keys =  Object.keys(list[0]);
+		            	var header = new Array();
+						for(var i in keys) {
+							header[i] = keys[i];
+						}
+						vm.headers = header;
 		            	vm.articleList = dataConvertToJson(list);
-
+						console.log(header);
 		            }
 		        })
 		    },
@@ -86,7 +92,7 @@
 	
 	//Number , String , Boolean , Function , Object , Null , undefined , Array 
 	function dataConvertToJson (data) {
-		console.log(typeof data);
+		// console.log(typeof data);
 		var type = typeof data;
 		if (type == "string") {
 			return JSON.parse(data);

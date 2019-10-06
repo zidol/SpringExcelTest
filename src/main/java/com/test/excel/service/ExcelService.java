@@ -2,8 +2,10 @@ package com.test.excel.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
@@ -24,10 +26,21 @@ public class ExcelService {
      * @return 생성된 워크북
      */
     public XSSFWorkbook makeSimpleFruitExcelWorkbook(List<Map<String, Object>> list) {
+    	List<String> headers = new ArrayList<String>();
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	map = list.get(0);
+    	Set set = map.keySet();
+    	Iterator iterator = set.iterator();
+    	
+    	while(iterator.hasNext()){
+    		String key = (String) iterator.next();
+    		headers.add(key);
+    	}
+    	System.out.println(headers);
     	XSSFWorkbook workbook = new XSSFWorkbook();
         
         // 시트 생성
-        XSSFSheet sheet = workbook.createSheet("과일표");
+        XSSFSheet sheet = workbook.createSheet("Data");
         
         //시트 열 너비 설정
         sheet.setColumnWidth(0, 1500);
@@ -38,17 +51,22 @@ public class ExcelService {
         // 헤더 행 생
         Row headerRow = sheet.createRow(0);
         // 해당 행의 첫번째 열 셀 생성
-        Cell headerCell = headerRow.createCell(0);
-        headerCell.setCellValue("번호");
-        // 해당 행의 두번째 열 셀 생성
-        headerCell = headerRow.createCell(1);
-        headerCell.setCellValue("과일이름");
-        // 해당 행의 세번째 열 셀 생성
-        headerCell = headerRow.createCell(2);
-        headerCell.setCellValue("가격");
-        // 해당 행의 네번째 열 셀 생성
-        headerCell = headerRow.createCell(3);
-        headerCell.setCellValue("수량");
+//        Cell headerCell = headerRow.createCell(0);
+//        headerCell.setCellValue("번호");
+//        // 해당 행의 두번째 열 셀 생성
+//        headerCell = headerRow.createCell(1);
+//        headerCell.setCellValue("과일이름");
+//        // 해당 행의 세번째 열 셀 생성
+//        headerCell = headerRow.createCell(2);
+//        headerCell.setCellValue("가격");
+//        // 해당 행의 네번째 열 셀 생성
+//        headerCell = headerRow.createCell(3);
+//        headerCell.setCellValue("수량");
+        Cell headerCell = null;
+        for (int i = 0; i < headers.size(); i++) {
+			headerCell = headerRow.createCell(i);
+			headerCell.setCellValue(headers.get(i));
+		}
         
         // 과일표 내용 행 및 셀 생성
         XSSFRow  bodyRow = null;
@@ -57,17 +75,21 @@ public class ExcelService {
             // 행 생성
             bodyRow = sheet.createRow(i+1);
             // 데이터 번호 표시
-            bodyCell = bodyRow.createCell(0);
-            bodyCell.setCellValue((Integer) list.get(i).get("id"));
-            // 데이터 이름 표시
-            bodyCell = bodyRow.createCell(1);
-            bodyCell.setCellValue((String) list.get(i).get("name"));
-            // 데이터 가격 표시
-            bodyCell = bodyRow.createCell(2);
-            bodyCell.setCellValue((String) list.get(i).get("price"));
-            // 데이터 수량 표시
-            bodyCell = bodyRow.createCell(3);
-            bodyCell.setCellValue((String) list.get(i).get("quantity"));
+//            bodyCell = bodyRow.createCell(0);
+//            bodyCell.setCellValue((String) list.get(i).get("번호"));
+//            // 데이터 이름 표시
+//            bodyCell = bodyRow.createCell(1);
+//            bodyCell.setCellValue((String) list.get(i).get("과일이름"));
+//            // 데이터 가격 표시
+//            bodyCell = bodyRow.createCell(2);
+//            bodyCell.setCellValue((String) list.get(i).get("가격"));
+//            // 데이터 수량 표시
+//            bodyCell = bodyRow.createCell(3);
+//            bodyCell.setCellValue((String) list.get(i).get("수량"));
+            for(int j = 0; j < headers.size(); j++) {
+            	bodyCell = bodyRow.createCell(j);
+            	bodyCell.setCellValue((String)list.get(i).get(headers.get(j)));
+            }
         }
         return workbook;
     }
@@ -108,13 +130,13 @@ public class ExcelService {
             System.out.println("컬럼 수 : " + colNum);
             XSSFRow row = sheet.getRow(0);
 
-            for(int i = 0; i < colNum; i++) {
-            	headerName.add(convertName(row.getCell(i).getStringCellValue()));
-            }
-            
 //            for(int i = 0; i < colNum; i++) {
-//            	headerName.add(row.getCell(i).getStringCellValue());
+//            	headerName.add(convertName(row.getCell(i).getStringCellValue()));
 //            }
+            
+            for(int i = 0; i < colNum; i++) {
+            	headerName.add(row.getCell(i).getStringCellValue());
+            }
 
             for(int i=1; i<sheet.getLastRowNum() + 1; i++) {
             	map = new HashMap<String, String>();

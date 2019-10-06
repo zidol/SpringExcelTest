@@ -26,6 +26,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.excel.service.ArticleService;
 import com.test.excel.service.ExcelService;
+
+
 @Controller
 public class ExcelController {
 	
@@ -41,6 +43,7 @@ public class ExcelController {
     public String downloadExcelFile(HttpServletRequest request , Model model) throws Exception { 
 		
 		String tableName = request.getParameter("tableName");
+//		System.out.println(tableName);
 //        String[] names = {"자몽", "애플망고", "멜론", "오렌지"};
 //        long[] prices = {5000, 10000, 7000, 6000};
 //        int[] quantities = {50, 50, 40, 40};
@@ -53,7 +56,7 @@ public class ExcelController {
      
         model.addAttribute("locale", Locale.KOREA);
         model.addAttribute("workbook", workbook);
-        model.addAttribute("workbookName", "과일표");
+        model.addAttribute("workbookName", "Excel");
         
 
         return "excelDownloadView";
@@ -77,15 +80,16 @@ public class ExcelController {
 	@ResponseBody
 	@RequestMapping(value = "/insertData", method = RequestMethod.POST)
     public void insertData(@RequestBody List<Map<String,Object>> map) throws Exception {
-		String now = System.currentTimeMillis() +"";
-		logger.info("테이블 생성");
-		articleService.createArticle(map, now);
-		logger.info("테이블 생성 완료");
-		now += "_Excel";
-		Map<String, Object> addMap = new HashMap<String, Object>();
-		addMap.put("now", now);
-		map.add(addMap);
 		System.out.println(map);
+		String tableName = System.currentTimeMillis() +"";
+		logger.info("테이블 생성");
+		tableName += "_Excel";
+		articleService.createArticle(map, tableName);
+		logger.info("테이블 생성 완료");
+		Map<String, Object> addMap = new HashMap<String, Object>();
+		addMap.put("tableName", tableName);
+		map.add(addMap);
+		System.out.println("insert : " + map);
 		articleService.insertArticle(map);
     }
 	
