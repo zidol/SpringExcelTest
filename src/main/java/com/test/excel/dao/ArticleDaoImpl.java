@@ -21,7 +21,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	private static final String SELECT_DETAIL = MP + ".article";
 	
 	@Override
-	public void insert(List<Map<String, Object>> map) throws DataAccessException {
+	public void insert(List<Map<String, String>> map) throws DataAccessException {
 		sqlsession.insert(INSERT, map);		
 	}
 
@@ -37,7 +37,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	@Override
-	public List<Map<String, Object>> article(Map<String, String> id) throws DataAccessException {
+	public List<Map<String, String>> article(Map<String, String> id) throws DataAccessException {
 		return sqlsession.selectList(SELECT_DETAIL, id);
 	}
 }

@@ -16,7 +16,7 @@
 	 
 	</form>
 		<form id="form2" name="form2" action="">
-			<table border="1" cellpadding="0" cellspacing="0" width="700">
+			<table border="1" cellpadding="0" cellspacing="0" width="700" v-if="isStatusOn">
 				<tr>
 					<th bgcolor="orange" width="150" v-for="(c, index) in headers">{{c}}</th>
 					<!-- <th bgcolor="orange" width="200">이름</th>
@@ -38,11 +38,13 @@
 		data : {
 			articleList : [],
 			headers : [],
+			isStatusOn : false,
 		},
 		methods : {
 			doExcelUploadProcess : function(){
 		        var vm = this;
 		        var f = new FormData(document.getElementById('form1'));
+		        this.isStatusOn = !this.isStatusOn;
 
 		        $.ajax({
 		            url: "uploadExcelFile",
@@ -52,20 +54,20 @@
 		            type: "POST",
 		            success: function(list){
 		            	console.log(list[0]);
-		            	var keys =  Object.keys(list[0]);
-		            	var header = new Array();
-						for(var i in keys) {
-							header[i] = keys[i];
-						}
-						vm.headers = header;
-		            	vm.articleList = dataConvertToJson(list);
-						console.log(header);
+			            	var keys =  Object.keys(list[0]);
+			            	var header = new Array();
+							for(var i in keys) {
+								header[i] = keys[i];
+							}
+							vm.headers = header;
+			            		vm.articleList = dataConvertToJson(list);
+							console.log(header);
 		            }
 		        })
 		    },
 		    
 		    doExcelDownloadProcess : function() {
-		    	var f = document.form1;
+		    		var f = document.form1;
 		        // f.action = "downloadExcelFile";
 				// f.submit();
 		        console.log(f);
@@ -76,14 +78,14 @@
 		    		var listData = vm.articleList;
 		    		
 		    		$.ajax({
-			            url: "insertData",
-			            data: JSON.stringify(listData),
-			            contentType: "application/json",
-			            type: "POST",
-			            success: function(){
-							location.href="/articleList";
-			            }
-			        })
+		    			url: "insertData",
+		            data: JSON.stringify(listData),
+		            contentType: "application/json",
+		            type: "POST",
+		            success: function(){
+		            	location.href="/articleList";
+			        }
+		    		})
 		    }
 		}
 	

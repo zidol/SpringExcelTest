@@ -19,19 +19,44 @@ public class ArticleServiceImpl implements ArticleService{
 	ArticleDao articleDao;
 	
 	@Override
-	public void insertArticle(List<Map<String, Object>> map) throws Exception {
-		// TODO Auto-generated method stub
-		articleDao.insert(map);
+	public void insertArticle(List<Map<String, String>> map, Map<String, String> tableName) throws Exception {
+		// TODO Auto-generated method stub\
+		List<Map<String, String>> newList = new ArrayList<Map<String,String>>();
+		Map<String, String> newMap = null;
+		//엑셀 헤더이름 추출
+		List<String> keys = new ArrayList<String>();
+		Map<String, String> keyMap = new HashMap<String, String>();
+		keyMap = map.get(0);
+		Set set = keyMap.keySet();
+		Iterator iterator = set.iterator();
 		
+		//헤더이름 테이블 컬럼 이름으로 저장 하기위한 작업
+		while(iterator.hasNext()) {
+			String key = (String)iterator.next();
+			keys.add(key);
+		}
+		
+		System.out.println(keys);
+		for(int i = 0; i < map.size(); i++) {
+			newMap = new HashMap<String, String>();
+			for(int j = 0; j < keys.size(); j++) {
+				String convertedValue = map.get(i).get(keys.get(j)).replace("\\", "\\\\");
+				newMap.put(keys.get(j), convertedValue);
+			}
+			newList.add(newMap);
+		}
+		newList.add(tableName);
+		map.clear();
+		articleDao.insert(newList);
 	}
 
 	@Override
-	public void createArticle(List<Map<String, Object>> map, String tableName) throws Exception {
+	public void createTable(List<Map<String, String>> map, String tableName) throws Exception {
 		// TODO Auto-generated method stub
 		List<String> tableColumn = new ArrayList<String>();
 		
 		//엑셀 헤더이름 추출
-		Map<String, Object> keyMap = new HashMap<String, Object>();
+		Map<String, String> keyMap = new HashMap<String, String>();
 		keyMap = map.get(0);
 		Set set = keyMap.keySet();
 		Iterator iterator = set.iterator();
@@ -61,7 +86,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 
 	@Override
-	public List<Map<String, Object>> article(Map<String, String> id) throws Exception {
+	public List<Map<String, String>> article(Map<String, String> id) throws Exception {
 		return articleDao.article(id);
 	}
 

@@ -50,7 +50,7 @@ public class ExcelController {
 //        List<Fruit> list = service.makeFruitList(names, prices, quantities);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("tableName", tableName);
-		List<Map<String, Object>> list = articleService.article(map);
+		List<Map<String, String>> list = articleService.article(map);
 
 		XSSFWorkbook workbook = service.excelFileDownloadProcess(list);
      
@@ -79,18 +79,21 @@ public class ExcelController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/insertData", method = RequestMethod.POST)
-    public void insertData(@RequestBody List<Map<String,Object>> map) throws Exception {
-		System.out.println(map);
+    public void insertData(@RequestBody List<Map<String,String>> list) throws Exception {
+		System.out.println(list);
 		String tableName = System.currentTimeMillis() +"";
 		logger.info("테이블 생성");
+		
 		tableName += "_Excel";
-		articleService.createArticle(map, tableName);
+		articleService.createTable(list, tableName);
+		
 		logger.info("테이블 생성 완료");
-		Map<String, Object> addMap = new HashMap<String, Object>();
+		
+		Map<String, String> addMap = new HashMap<String, String>();
 		addMap.put("tableName", tableName);
-		map.add(addMap);
-		System.out.println("insert : " + map);
-		articleService.insertArticle(map);
+//		list.add(addMap);
+		System.out.println("insert : " + list);
+		articleService.insertArticle(list, addMap);
     }
 	
 	@RequestMapping(value = "/articleList", method = RequestMethod.GET)
@@ -105,7 +108,7 @@ public class ExcelController {
 	public String article(@PathVariable("tableName") String tableName, Model model) throws Exception {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("tableName", tableName);
-		List<Map<String, Object>> list = articleService.article(map);
+		List<Map<String, String>> list = articleService.article(map);
 		System.out.println(list);
 		model.addAttribute("article", new ObjectMapper().writeValueAsString(list));
 		model.addAttribute("tableName", tableName);

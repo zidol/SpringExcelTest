@@ -36,7 +36,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
     public String excelPage() {
-        
+		logger.info("메인화면");
         return "excelDownload";
     }
 	
