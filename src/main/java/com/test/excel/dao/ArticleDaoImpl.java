@@ -27,7 +27,6 @@ public class ArticleDaoImpl implements ArticleDao {
 
 	@Override
 	public void create(Map<String, String>map) throws DataAccessException {
-		System.out.println(map.toString());
 		sqlsession.update(CREATE_TABLE, map);	
 	}
 

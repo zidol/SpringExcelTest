@@ -18,7 +18,7 @@
 		<form id="form2" name="form2" action="">
 			<table border="1" cellpadding="0" cellspacing="0" width="700" v-if="isStatusOn">
 				<tr>
-					<th bgcolor="orange" width="150" v-for="(c, index) in headers">{{c}}</th>
+					<th bgcolor="orange" width="150" v-for="(c, index) in headers">{{c.replace(/\_/g," ")}}</th>
 					<!-- <th bgcolor="orange" width="200">이름</th>
 					<th bgcolor="orange" width="150">가격</th>
 					<th bgcolor="orange" width="150">개수</th> -->

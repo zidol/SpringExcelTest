@@ -3,6 +3,7 @@ package com.test.excel.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,7 +26,7 @@ public class ArticleServiceImpl implements ArticleService{
 		Map<String, String> newMap = null;
 		//엑셀 헤더이름 추출
 		List<String> keys = new ArrayList<String>();
-		Map<String, String> keyMap = new HashMap<String, String>();
+		Map<String, String> keyMap = new LinkedHashMap<String, String>();
 		keyMap = map.get(0);
 		Set set = keyMap.keySet();
 		Iterator iterator = set.iterator();
@@ -38,7 +39,7 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		System.out.println(keys);
 		for(int i = 0; i < map.size(); i++) {
-			newMap = new HashMap<String, String>();
+			newMap = new LinkedHashMap<String, String>();
 			for(int j = 0; j < keys.size(); j++) {
 				String convertedValue = map.get(i).get(keys.get(j)).replace("\\", "\\\\");
 				newMap.put(keys.get(j), convertedValue);
@@ -56,7 +57,7 @@ public class ArticleServiceImpl implements ArticleService{
 		List<String> tableColumn = new ArrayList<String>();
 		
 		//엑셀 헤더이름 추출
-		Map<String, String> keyMap = new HashMap<String, String>();
+		Map<String, String> keyMap = new LinkedHashMap<String, String>();
 		keyMap = map.get(0);
 		Set set = keyMap.keySet();
 		Iterator iterator = set.iterator();
@@ -69,7 +70,7 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		String create_table = "create table " + tableName + "(";
 		for(int i = 0; i < tableColumn.size(); i++) {
-			create_table += tableColumn.get(i).equals("id") ? tableColumn.get(i).replace(" ", "") + " int auto_increment primary key, " : tableColumn.get(i).replace(" ", "") + " varchar(500) not null, ";
+			create_table += tableColumn.get(i).equals("id") ? tableColumn.get(i).replace(" ", "") + " int auto_increment primary key, " : tableColumn.get(i).replace(" ", "_") + " varchar(500) not null, ";
 		}
 		create_table = create_table.substring(0, create_table.length()-2);
 		create_table += ")DEFAULT CHARSET=utf8";

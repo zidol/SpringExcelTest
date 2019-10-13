@@ -28,7 +28,7 @@
 					<td align="left">{{c.quantity}}</td>
 				</tr> -->
 				<tr>
-					<th bgcolor="orange" width="150" v-for="(c, index) in headers">{{c}}</th>
+					<th bgcolor="orange" width="150" v-for="(c, index) in headers">{{c.replace(/\_/g," ")}}</th>
 					<!-- <th bgcolor="orange" width="200">이름</th>
 					<th bgcolor="orange" width="150">가격</th>
 					<th bgcolor="orange" width="150">개수</th> -->

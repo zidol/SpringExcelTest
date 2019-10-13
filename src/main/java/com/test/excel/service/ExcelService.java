@@ -3,6 +3,7 @@ package com.test.excel.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,7 +29,7 @@ public class ExcelService {
 	 */
 	public XSSFWorkbook makeSimpleFruitExcelWorkbook(List<Map<String, String>> list) {
 		List<String> headers = new ArrayList<String>();
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new LinkedHashMap<String, String>();
 		map = list.get(0);
 		Set set = map.keySet();
 		Iterator iterator = set.iterator();
@@ -49,7 +50,7 @@ public class ExcelService {
 		sheet.setColumnWidth(0, 3000);
 		sheet.setColumnWidth(0, 1500);
 
-		// 헤더 행 생
+		// 헤더 행 생성
 		Row headerRow = sheet.createRow(0);
 		// 해당 행의 첫번째 열 셀 생성
 //        Cell headerCell = headerRow.createCell(0);
@@ -69,7 +70,7 @@ public class ExcelService {
 			headerCell.setCellValue(headers.get(i));
 		}
 
-		// 과일표 내용 행 및 셀 생성
+		//엑셀 내용 행 및 셀 생성
 		XSSFRow bodyRow = null;
 		XSSFCell bodyCell = null;
 		for (int i = 0; i < list.size(); i++) {
@@ -141,7 +142,7 @@ public class ExcelService {
 			}
 
 			for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
-				map = new HashMap<String, String>();
+				map = new LinkedHashMap<String, String>();
 				row = sheet.getRow(i);
 				// 행이 존재하기 않으면 패스
 				if (null == row) {
@@ -156,7 +157,6 @@ public class ExcelService {
 				}
 				result.add(map);
 			}
-			System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

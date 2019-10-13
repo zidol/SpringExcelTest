@@ -45,7 +45,7 @@
 	</select>
 	
 	<!-- 테이블 상세 조회 -->
-	<select id="article" parameterType="String" resultType="java.util.HashMap" >
+	<select id="article" parameterType="String" resultType="java.util.LinkedHashMap" >
 	    <![CDATA[
 			SELECT * 
 			 FROM ${tableName}	 
