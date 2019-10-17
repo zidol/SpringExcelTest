@@ -25,7 +25,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.excel.service.ArticleService;
+import com.test.excel.service.ExcelDataProcessService;
 import com.test.excel.service.ExcelService;
+import com.test.excel.vo.FileVO;
 
 
 @Controller
@@ -35,6 +37,9 @@ public class ExcelController {
 	
 	@Autowired
 	ExcelService service;
+	
+	@Autowired
+	ExcelDataProcessService excelDataProcessService;
 	
 	@Autowired
 	ArticleService articleService;
@@ -65,15 +70,23 @@ public class ExcelController {
 
 	@RequestMapping(value = "/uploadExcelFile", method = RequestMethod.POST)
 	@ResponseBody
-    public List<Map<String, String>> uploadExcelFile(MultipartHttpServletRequest request, Model model) throws JsonProcessingException {
+//    public List<Map<String, String>> uploadExcelFile(MultipartHttpServletRequest request, Model model) throws Exception {
+	public void uploadExcelFile(MultipartHttpServletRequest request, Model model) throws Exception {
+		request.setCharacterEncoding("UTF-8");
         MultipartFile file = null;
         Iterator<String> iterator = request.getFileNames();
         if(iterator.hasNext()) {
             file = request.getFile(iterator.next());
         }
-        List<Map<String, String>> list = service.uploadExcelFile(file);
+//        FileVO fvo = new FileVO();
+//        fvo.setOrignlFileNm(file.getOriginalFilename());
+//        fvo.set
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("file",excelDataProcessService.getPreviewFileData(file));
+        System.out.println(map);
+//        List<Map<String, String>> list = service.uploadExcelFile(file);
         
-        return list;
+//        return list;
     }
 	
 	
@@ -92,8 +105,9 @@ public class ExcelController {
 		Map<String, String> addMap = new HashMap<String, String>();
 		addMap.put("tableName", tableName);
 //		list.add(addMap);
-		System.out.println("insert : " + list);
+		logger.info("테이블 데이터 입력");
 		articleService.insertArticle(list, addMap);
+		logger.info("테이블 데이터 입력 완료");
     }
 	
 	@RequestMapping(value = "/articleList", method = RequestMethod.GET)
