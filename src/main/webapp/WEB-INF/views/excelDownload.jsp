@@ -15,7 +15,7 @@
 <!-- Load Vue followed by BootstrapVue -->
 <script src="https://unpkg.com/vue@latest/dist/vue.min.js"></script>
 <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
-    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
 </head>
 <body>
 <div id="article">
@@ -27,12 +27,14 @@
 	</form>
 	<div>
 		
-		<label>행 제거</label>
-		<button class="decrement-button" @click="rowDecrement">−</button>
-        <button class="increment-button" @click="rowIncrement">+</button>
-        <label>열제거</label>
-		<button class="decrement-button" @click="columnDecrement">−</button>
-        <button class="increment-button" @click="columnIncrement">+</button>
+		<label>헤더 위치</label>
+		{{number}}
+		<button class="decrement-button" @click="rowDecrement('rowDe')">−</button>
+        <button class="increment-button" @click="rowIncrement('rowIn')">+</button>
+		<label>데이터 시작</label>
+		{{dataNumber}}
+		<button class="decrement-button" @click="dataRowDecrement('colDe')">−</button>
+        <button class="increment-button" @click="dataRowIncrement('colIn')">+</button>
 		<!-- <label>시작 행</label> <input type="number" min="0" v-model="checkedNames"> -->
 	</div>
 		<form id="form2" name="form2" action="">
@@ -53,8 +55,8 @@
 					      v-bind:value="index"
 					    >
 					</td> -->
-					<td align="center" v-for="(k, i) in c" >
-						<input id="name_id" type="text" v-model="k.value" :disabled="checkedNames.includes(index) ? true : false">
+					<td align="center" v-for="(k, i) in c">
+						<input :ref="'inp'+index" v-bind:id="'data'+index" type="text" v-model="k.value" :disabled="checkedNames.includes(index-1) ? true : false" >
 					</td>
 					<!-- <td align="left"><input id="price_id" type="text" v-model="c.부서"></td>
 					<td align="left"><input id="quantity_id" type="text" v-model="c[headers[2]]"></td> -->
@@ -77,7 +79,8 @@
 				backgroundColor: ''
 			},
 			checkedNames: [],
-			number : 0
+			number : 0,
+			dataNumber : 0
 		},
 		methods : {
 			doExcelUploadProcess : function(){
@@ -150,30 +153,82 @@
 		    },
 		    
 		    rowIncrement : function() {
-		    		vm.checkedNames.push(vm.number++);
+				// var flag = a;
+				// if(vm.number === vm.dataNumber) {
+				// 	vm.dataNumber++;
+				// }
+		    	// vm.checkedNames.push(vm.number++);
+				// console.log("refs : ", this.$refs.inp0);
+				// this.$refs.inp0[0].disabled
+				var a = vm.number;
+				var b = 0;
+				var c = 0;
+				var keys =  Object.keys(this.$refs);
+			    var header = new Array();
+				for(var i in keys) {
+					header[i] = keys[i];
+				}
+				// for(var i = 0; i < header.length; i++) {
+					
+				// }
+				console.log(this.$refs)
+				for(var j=0; j < this.$refs.inp0.length; j++) {
+					this.$refs[header[a]][j].disabled = true;
+					c=j;
+				}
+				/* for(var j=0; j < this.$refs.inp0.length-1; j++) {
+					this.$refs[header[a]][j].style.fontWeight = 'normal';
+				} */
+				
+				++a;
+				for(var i=0; i < 3; i++) {
+					this.$refs[header[a]][i].style.fontWeight = 'bold';
+				}
+				vm.number = a;
 		    },
 		    
 		    rowDecrement : function() {
-			    	if(vm.number == 0) {
+			    	/* if(vm.number == 0) {
 		    			return;
 		    		} 
 		    		console.log(vm.number);
-		    		vm.checkedNames.splice(vm.number-1, 1);
-		    		vm.number--;
+		    		vm.checkedNames.splice(vm.number-1, 1); */
+		    		// vm.number--;
+					var a = vm.number;
+					if(a==0) {
+						return;
+					}
+		    		var keys =  Object.keys(this.$refs);
+				    var header = new Array();
+					for(var i in keys) {
+						header[i] = keys[i];
+						console.log(header[i]);
+					}
+					for(var j=0; j < this.$refs.inp0.length; j++) {
+						this.$refs[header[a-1]][j].disabled = false;
+						this.$refs[header[a-1]][j].style.fontWeight = 'normal';
+					}
+					--a;
+					vm.number = a;
+					console.log(a)
 		    }
 		    
 		    ,
-		    columnIncrement : function() {
-	    			vm.checkedNames.push(vm.number++);
-	    		},
+		    dataRowIncrement : function() {
+				if(vm.dataNumber == 0 || vm.dataNumber < vm.number){
+					vm.dataNumber = vm.number;
+				}
+	    		vm.checkedNames.push(vm.dataNumber++);
+				console.log(vm.dataNumber);
+	    	},
 	    
-	    		columnDecrement : function() {
-			    	if(vm.number == 0) {
-		    			return;
-		    		} 
-		    		console.log(vm.number);
-		    		vm.checkedNames.splice(vm.number-1, 1);
-		    		vm.number--;
+			dataRowDecrement : function() {
+				// if(vm.dataNumber == 0 || vm.number == vm.dataNumber) {
+				// 	return;
+				// } 
+				vm.checkedNames.splice(vm.dataNumber-1, 1);
+				vm.dataNumber--;
+				console.log(vm.dataNumber);
 		    }
 		}
 	

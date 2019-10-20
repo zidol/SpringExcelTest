@@ -195,6 +195,7 @@ public class ExcelDataProcessService {
 		System.out.println("File is Empty ? : " +file.isEmpty());
 		// 엑셀 객체 생성
 		wb = WorkbookFactory.create(file.getInputStream());
+		System.out.println(wb.getSheetName(0));
 		// 시트 for문
 		for (int sheetIdx = 0; sheetIdx < wb.getNumberOfSheets(); sheetIdx++) {
 
