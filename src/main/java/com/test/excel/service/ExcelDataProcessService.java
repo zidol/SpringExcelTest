@@ -31,7 +31,7 @@ public class ExcelDataProcessService {
 	private static final String UPLOAD_PATH = "C:\\Study\\fileupload\\";
 
 	// 시각화 요청 데이터 미리보기
-	public Map<String, Object> getPreviewFileData(MultipartFile file) throws Exception {
+	public Map<String, Object> getPreviewFileData(MultipartFile file, String selected) throws Exception {
 //	      System.out.println("");
 //	      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 //	      System.out.println("getOrignlFileNm : " + fvo.getOrignlFileNm());
@@ -54,7 +54,7 @@ public class ExcelDataProcessService {
 			if (fvo.getFileExtsn().toLowerCase().equals("csv")) {
 				// csv 타입 데이터 읽어오기
 				System.out.println("readCSVFILE" + fvo.toString());
-				data = readCsvFile(fvo, file);
+				data = readCsvFile(fvo, file, selected);
 			} else if (fvo.getFileExtsn().toLowerCase().equals("xlsx")) {
 				// xlsx 타입 데이터 읽어오기 (대용량까지 가능)
 //	            data = readLargeExcelFile(fvo);
@@ -94,7 +94,7 @@ public class ExcelDataProcessService {
 	public final static String UNKNOWN = "";
 	public final static int MAX_READ_ROW = 100;
 
-	public Map<String, Object> readCsvFile(FileVO fvo, MultipartFile file) throws Exception {
+	public Map<String, Object> readCsvFile(FileVO fvo, MultipartFile file, String selected) throws Exception {
 		// 반환 데이터 (시트별 데이터 - csv는 시트가 없음)
 		Map<String, Object> info = new LinkedHashMap<String, Object>();
 
@@ -105,7 +105,13 @@ public class ExcelDataProcessService {
 //	      try {
 		// 읽은 csv 파일 객체를 super csv라는 라이브러리의 ICsvListReader 객체로 받아옴 (STANDARD_PREFERENCE
 		// => csv 표준 데이터 구분값 - '"', ',', "\r\n")
-		listReader = new CsvListReader(br, CsvPreference.STANDARD_PREFERENCE);
+		if(selected.equals("comma")) {
+			listReader = new CsvListReader(br, CsvPreference.STANDARD_PREFERENCE);
+		} else if(selected.equals("tap")) {
+			listReader = new CsvListReader(br, CsvPreference.TAB_PREFERENCE);
+		} else if(selected.equals("semicolon")) {
+			listReader = new CsvListReader(br, CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
+		}
 
 		/* @@@ 해더 정보 담기 @@@ */
 		// 첫번째 줄(컬럼) 데이터 가져오기

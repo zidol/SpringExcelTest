@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -71,8 +72,9 @@ public class ExcelController {
 	@RequestMapping(value = "/uploadExcelFile", method = RequestMethod.POST)
 	@ResponseBody
 //    public List<Map<String, String>> uploadExcelFile(MultipartHttpServletRequest request, Model model) throws Exception {
-	public Map<String, Object> uploadExcelFile(MultipartHttpServletRequest request, Model model) throws Exception {
+	public Map<String, Object> uploadExcelFile(MultipartHttpServletRequest request, Model model, @RequestParam("selected") String selected) throws Exception {
 		request.setCharacterEncoding("UTF-8");
+		System.out.println(selected);
         MultipartFile file = null;
         Iterator<String> iterator = request.getFileNames();
         if(iterator.hasNext()) {
@@ -87,7 +89,7 @@ public class ExcelController {
 //        List<Map<String, String>> list = service.uploadExcelFile(file);
         
 //        return list;
-        return excelDataProcessService.getPreviewFileData(file); 
+        return excelDataProcessService.getPreviewFileData(file, selected); 
     }
 	
 	
