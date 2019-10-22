@@ -70,7 +70,6 @@ public class ExcelController {
 	@RequestMapping(value = "/uploadExcelFile", method = RequestMethod.POST)
 	@ResponseBody
 //    public List<Map<String, String>> uploadExcelFile(MultipartHttpServletRequest request, Model model) throws Exception {
-<<<<<<< HEAD
 	public Map<String, Object> uploadExcelFile(MultipartHttpServletRequest request, Model model,
 			@RequestParam("selected") String selected) throws Exception {
 		request.setCharacterEncoding("UTF-8");
@@ -80,16 +79,6 @@ public class ExcelController {
 		if (iterator.hasNext()) {
 			file = request.getFile(iterator.next());
 		}
-=======
-	public Map<String, Object> uploadExcelFile(MultipartHttpServletRequest request, Model model, @RequestParam("selected") String selected) throws Exception {
-		request.setCharacterEncoding("UTF-8");
-		System.out.println(selected);
-        MultipartFile file = null;
-        Iterator<String> iterator = request.getFileNames();
-        if(iterator.hasNext()) {
-            file = request.getFile(iterator.next());
-        }
->>>>>>> master
 //        FileVO fvo = new FileVO();
 //        fvo.setOrignlFileNm(file.getOriginalFilename());
 //        fvo.set
@@ -98,7 +87,6 @@ public class ExcelController {
 //        List<Map<String, String>> list = service.uploadExcelFile(file);
 
 //        return list;
-<<<<<<< HEAD
 		return excelDataProcessService.getPreviewFileData(file, selected);
 	}
 
@@ -136,13 +124,6 @@ public class ExcelController {
 
 		return map; 
 	}
-
-=======
-        return excelDataProcessService.getPreviewFileData(file, selected); 
-    }
-	
-	
->>>>>>> master
 	@ResponseBody
 	@RequestMapping(value = "/insertData", method = RequestMethod.POST)
 	public void insertData(@RequestBody List<Map<String, String>> list) throws Exception {

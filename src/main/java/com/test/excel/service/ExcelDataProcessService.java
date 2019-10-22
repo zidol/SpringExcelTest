@@ -105,11 +105,7 @@ public class ExcelDataProcessService {
 		// => csv 표준 데이터 구분값 - '"', ',', "\r\n")
 		if(selected.equals("comma")) {
 			listReader = new CsvListReader(br, CsvPreference.STANDARD_PREFERENCE);
-<<<<<<< HEAD
 		} else if(selected.equals("tab")) {
-=======
-		} else if(selected.equals("tap")) {
->>>>>>> master
 			listReader = new CsvListReader(br, CsvPreference.TAB_PREFERENCE);
 		} else if(selected.equals("semicolon")) {
 			listReader = new CsvListReader(br, CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
