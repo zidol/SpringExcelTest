@@ -32,8 +32,6 @@ public class HomeController {
 //		return "home";
 //	}
 	
-	
-	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
     public String excelPage() {
 		logger.info("메인화면");
