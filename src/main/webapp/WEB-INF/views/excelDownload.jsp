@@ -52,7 +52,7 @@
 			<h2>원본 데이터</h2>
 		</div>
 		<form id="form2" name="form2" action="">
-			<table border="1" cellpadding="0" cellspacing="0" width="700"
+			<table class="table table-gray table-hover" border="1" cellpadding="0" cellspacing="0" width="700"
 				v-if="isStatusOn">
 				<!-- <tr>
 					<th v-bind:style="bgc" width="150" v-for="c in headers">{{c.value}}</th>
@@ -86,7 +86,7 @@
 		</div>
 		
 		<div>
-			<table border="1" cellpadding="0" cellspacing="0" width="700"
+			<table class="table table-gray table-hover" border="1" cellpadding="0" cellspacing="0" width="700"
 				v-if="isExtractOn">
 				<tr v-for="(c, index) in extractList">
 					<td>{{index + 1}}</td>
